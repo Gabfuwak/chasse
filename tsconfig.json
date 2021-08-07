@@ -15,7 +15,12 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@gstyles/*": ["./styles/*"]
+      "@styles/*": [
+        "./src/styles/pages/*", 
+        "./src/styles/pages/*.module.css",
+        "./src/styles/common/*", 
+        "./src/styles/common/*.module.css"
+      ]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

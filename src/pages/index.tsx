@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import styles from '@gstyles/Home.module.css'
+import styles from '@styles/Home'
 
 export default function Home() {
   return (
