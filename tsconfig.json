@@ -16,13 +16,22 @@
     "baseUrl": ".",
     "paths": {
       "@styles/*": [
-        "./src/styles/pages/*", 
-        "./src/styles/pages/*.module.css",
-        "./src/styles/common/*", 
-        "./src/styles/common/*.module.css"
+        "./src/styles/*"
+      ],
+      "@styles/p/*": [
+        "./src/styles/pages/*" 
+      ],
+      "@styles/u/*": [
+        "./src/styles/util/*", 
+        "./src/styles/common/*"
+      ],
+      "@util/*": [
+        "./src/util/page/*",
+        "./src/util/common/*" 
       ]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }
+
