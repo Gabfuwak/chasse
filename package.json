@@ -2,6 +2,10 @@
   "name": "electric-dongle-template",
   "version": "0.1.0",
   "private": true,
+
+  "author": {
+    "name": "Guilian Celin-Davanture"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
