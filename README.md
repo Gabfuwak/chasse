@@ -1,7 +1,14 @@
-This is a template repository that I made so that I had
-a file structure that I enjoyed. Feel free to use it if 
-you like it or propose some changes to it that I may or 
-may not approve. Not a professional programmer, so don't
-necessarily judge me on that level. 
+# CHASSE AU TRESOR
 
-[![Gitpod ready-to-code](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/GuilianCD/electric-dongle)
+This is a super cool project. README still to do.
+
+## tips for comitting
+
+- Try to only commit certain files at once. If you changed a lot of unrelated files, you can ```git commit file1.tsx file2.tsx``` to group certain related files in a single commit, and therefore having multiple logical commits instead of a messy one.
+
+That's it. That's the list
+
+## Code Contributors
+
+- Guilian Celin-Davanture
+- Gabin Maury
