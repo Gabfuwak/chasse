@@ -2,9 +2,12 @@
   "name": "electric-dongle-template",
   "version": "0.1.0",
   "private": true,
-  "author": {
+  "contributors": [{
     "name": "Guilian Celin-Davanture"
   },
+  {
+    "name": "Gabin Maury"
+  }],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -12,7 +15,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "next": "11.0.1",
+    "next": "^11.1.2",
     "react": "17.0.2",
     "react-dom": "17.0.2"
   },
