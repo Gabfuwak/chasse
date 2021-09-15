@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import Image from 'next/image';
 import Link from 'next/link';
 import styles from '@styles/p/Home.module.css';
 
@@ -23,10 +22,10 @@ export default function Home() {
           we aren't gonna do that. 
         */}
 
-        <Link href={"/canary/qr?code=U2FsdGVkX1/v6klt/R+o0+kS3/6NIFvGQfQV/B0ritc="}>Link that works</Link>
+        <Link href={"/hunt/qr?code=U2FsdGVkX1/v6klt/R+o0+kS3/6NIFvGQfQV/B0ritc="}>Link that works</Link>
 
         <h1>And also</h1>
-        <Link href={"/canary/decoded/hunt1/step1"}>Link to actual hint</Link>
+        <Link href={"/hunt/decoded/hunt1/step1"}>Link to actual hint</Link>
       </main>
     </div>
   );

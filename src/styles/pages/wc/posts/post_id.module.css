@@ -1,0 +1,98 @@
+.fakePageBackground {
+	padding: 0;
+	margin: 0;
+	position: fixed;
+	--background-size: 100px;
+
+	min-width: calc(100vw + var(--background-size));
+	min-height: calc(100vh + var(--background-size));
+
+
+	background-color: #193576;
+	background-image: url("/toilet_background.png");
+	background-size: var(--background-size) var(--background-size);
+
+	animation-name: bgchachaSlide;
+	animation-duration: 6s;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+}
+
+@keyframes bgchachaSlide {
+	from {
+		top: 0px;
+		left: 0px;
+	}
+	to {
+		top: -100px;
+		left: -100px;
+	}
+}
+
+.realPageBG {
+	position: absolute;
+	top: 0;
+	left: 0;
+	
+}
+
+
+
+.blogpostContainer {
+	min-width: 100vw;
+	min-height: 100vh;
+
+	margin: 5vh 0;
+
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.blogpost {
+	width: clamp(60ch, 75vw, 1200px);
+	height: min-content;
+	background-color: #1e1e1e;
+
+    border: solid 4px white; 
+    border-radius: 20px;
+    padding: 1rem;
+}
+
+.mobileBlogpost {
+	width: 100%;
+	border-right: none;
+	border-left: none;
+	border-radius: 0px;
+}
+
+.blogpost img {
+	max-width: 100%;
+}
+
+.blogimg {
+	filter: blur(10%);
+}
+
+
+.imageflow {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	height: fit-content;
+
+	display: flex;
+	flex-basis: calc(100% / 3);
+
+}
+
+.imageflow > p {
+	margin: 0;
+	padding: 0;
+	height: min-content;
+}
+
+.imageflow > p > img {
+	height: 100%;
+}

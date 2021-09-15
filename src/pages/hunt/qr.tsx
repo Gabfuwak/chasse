@@ -22,7 +22,7 @@ export default function QRPage() {
 		} else {
 			router.replace("decoded/hunt1/step1");
 		}
-	}, [countdown]);
+	}, [countdown, router]);
 
 	return (
 		<main>
@@ -35,11 +35,11 @@ export default function QRPage() {
 	);
 }
 
-export async function getServerSideProps(context: GetServerSideProps) {
+export const getServerSideProps: GetServerSideProps = async (context) => {
 	let decoded = "";
 
 	let { code } = context.query;
-	let qr_id: string = code;
+	let qr_id = code;
 
 	if (!qr_id || qr_id === undefined) {
 		return {

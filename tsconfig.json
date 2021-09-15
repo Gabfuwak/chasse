@@ -30,11 +30,15 @@
       ],
       "@util/*": [
         "./src/util/page/*",
-        "./src/util/common/*" 
-      ]
+        "./src/util/common/*"
+      ],
+      "@hooks/*": ["./src/util/common/hooks/*"],
+      "@tools/*": ["./src/util/common/tools/*"],
+      "@public/*": ["./src/public/*"],
+      "@posts/*": ["./src/_posts/*"],
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "insane.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }
 
