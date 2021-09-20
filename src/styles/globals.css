@@ -5,9 +5,13 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 
+  font-size: 20px;
+
   background-color: #1e1e1e;
   color: white;
+
 }
+
 
 html{
   min-height:100%;/* make sure it is at least as tall as the viewport */

@@ -14,10 +14,10 @@
     "dev": "nodemon",
     "build": "next build && tsc --project tsconfig.server.json",
     "start": "NODE_ENV=production node dist/index.js",
+    "launch": "npm run build && npm run start",
     "lint": "next lint"
   },
   "dependencies": {
-    "@react-hook/media-query": "^1.1.1",
     "cookies": "^0.8.0",
     "crypto-js": "^4.1.1",
     "dotenv": "^10.0.0",
@@ -30,6 +30,7 @@
     "next": "^11.1.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "reading-time": "^1.5.0",
     "socket.io": "^4.2.0",
     "socket.io-client": "^4.2.0"
   },

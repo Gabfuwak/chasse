@@ -1,6 +1,6 @@
 ---
-post_title: Test post
-author: Danielle Dante Gurauvinci
+title: Test post
+author: Danielle 
 ---
 
 ## Awesome post

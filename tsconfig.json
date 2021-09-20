@@ -25,7 +25,8 @@
         "./src/styles/pages/*" 
       ],
       "@styles/u/*": [
-        "./src/styles/util/*", 
+        "./src/styles/utils/*",
+        "./src/styles/utils/components/*", 
         "./src/styles/common/*"
       ],
       "@util/*": [
@@ -35,7 +36,9 @@
       "@hooks/*": ["./src/util/common/hooks/*"],
       "@tools/*": ["./src/util/common/tools/*"],
       "@public/*": ["./src/public/*"],
+      "@meta/*": ["./src/_meta/*"],
       "@posts/*": ["./src/_posts/*"],
+      "@components/*": ["./src/util/common/components/*"]
     }
   },
   "include": ["next-env.d.ts", "insane.d.ts", "**/*.ts", "**/*.tsx"],

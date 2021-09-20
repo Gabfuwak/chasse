@@ -1,0 +1,23 @@
+{
+    "located": {
+        "building": "A",
+        "room": "corridor"
+    },
+    "style": "corridor",
+    "desc": {
+        "open": false,
+        "ceiling": "no-space",
+
+        "closet": {
+            "angled": false,
+            "size": "cramped",
+            "lock": "rotating"
+        }
+    },
+
+    "features": [
+        "tiling",
+        "individual_light",
+        "individual_trash"
+    ]
+}

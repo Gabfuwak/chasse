@@ -1,0 +1,39 @@
+{
+    "located": {
+        "building": "C",
+        "room": "corridor"
+    },
+
+    "style": "corridor",
+
+    "general": {
+        "sinks": 1,
+        "mirror": "small",
+        "noisy": true,
+        "echoes": false
+    },
+
+    "closets": {
+        "open": false,
+        "closedCeiling": false,
+        "size": "cramped",
+        "angled": true,
+        "lock": {
+            "type": "normal",
+            "hidden": false,
+            "visualClue": "false"
+        },
+        "flush": {
+            "overextends": false,
+            "decibels": "hurricane"
+        }
+    },
+
+    "windows": {
+        "count": 1,
+        "blurred": false
+    },
+
+    "specials": []
+}
+
