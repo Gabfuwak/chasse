@@ -86,21 +86,7 @@ export default function Page({ id, file, meta, stats }: PostProps) {
 	);
 
 	let minutes: string | number = stats.minutes;
-	let lessThan = "";
-	/**
-	 * Si il y a plusieurs minutes,
-	 * minutes s'écrit avec un s,
-	 * sinon sans s.
-	 */
-	let minuteWordEnding = "s";
-
-	let minuteText = 
-
-	if (minutes == 0) {
-		lessThan = "moins d'";
-		minutes = "une";
-		minuteWordEnding = "";
-	}
+	let minuteText = `${minutes==0 ? "moins d'une" : minutes} minute${minutes==0 ? "" : "s"} de lecture`;
 
 	const postJSX = parse(file.content, htmlParserOptions);
 	
@@ -126,9 +112,7 @@ export default function Page({ id, file, meta, stats }: PostProps) {
 								<p className={styles.blogAuthor}>
 									<span>{stats.words} mots </span>
 									<span>
-										({lessThan}
-										{minutes} {"minute" + minuteWordEnding}{" "}
-										de lecture)
+										({minuteText})
 									</span>
 								</p>
 							</div>
