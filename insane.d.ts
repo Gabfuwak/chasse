@@ -1,1 +1,1 @@
-declare module "insane"
+declare module "insane";
