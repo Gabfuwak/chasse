@@ -1,27 +1,60 @@
 import fs, { read, stat } from "fs";
 
+//React
+import React, { Fragment, ReactNode } from "react";
+//Next
 import { GetServerSideProps } from "next";
 import Head from "next/head";
-import React, { Fragment } from "react";
+import Link from "next/link";
 
+//Parsing mardown into html into JSX
 import matter from "gray-matter";
 import marked from "marked";
 import insane from "insane";
+import parse, {
+	domToReact,
+	HTMLReactParserOptions,
+	DOMNode,
+} from "html-react-parser";
+import ReactDOMServer from "react-dom/server";
 
+//Media query hook
 import useObjectMediaQuery from "@hooks/objmediaquery";
 
+//CSS modules
 import styles from "@styles/p/wc/post_generals.module.css";
 import toiletStyles from "@styles/u/toilet.module.css";
-
+//CSS utility function + nice background
 import compose from "@tools/composecss";
 import ToiletBG from "@components/toiletbackground";
 
+//Typescript object for the shape of the toilet metadata
 import ToiletMetaDataShape from "@meta/toilets/data.shape";
 
+//Used for little reading time indicator
 import readingTime, { ReadTimeResults } from "reading-time";
-import Link from "next/link";
 
+//Placed here so we don't have to serialize it
+const htmlParserOptions: HTMLReactParserOptions = {
+	replace: (domNode: any) => {
+		//? Had to turn off typescript type checking here
+		
+		if(domNode.type === 'text'){
+			return;
+		}
 
+		if(domNode.name === 'a'){
+			return (
+				//href has to exist here
+				<Link href={domNode.attribs.href}>
+					<a>
+						{domToReact(domNode.children, htmlParserOptions)}
+					</a>
+				</Link>
+			)
+		}
+	},
+};
 
 interface PostProps {
 	id: string;
@@ -35,13 +68,11 @@ interface PostProps {
 	stats: ReadTimeResults;
 }
 
-
-
 export default function Page({ id, file, meta, stats }: PostProps) {
 	const matches = useObjectMediaQuery(
 		{
 			screen: true,
-			maxAspectRatio: "19/20", //{text, minutes, words}
+			maxAspectRatio: "19/20",
 		},
 		{
 			screen: true,
@@ -63,12 +94,17 @@ export default function Page({ id, file, meta, stats }: PostProps) {
 	 */
 	let minuteWordEnding = "s";
 
+	let minuteText = 
+
 	if (minutes == 0) {
 		lessThan = "moins d'";
 		minutes = "une";
 		minuteWordEnding = "";
 	}
 
+	const postJSX = parse(file.content, htmlParserOptions);
+	
+	
 	return (
 		<Fragment>
 			<Head>
@@ -85,21 +121,20 @@ export default function Page({ id, file, meta, stats }: PostProps) {
 
 							<div>
 								<p className={styles.blogAuthor}>
-								Par {file.data.author}
+									Par {file.data.author}
 								</p>
 								<p className={styles.blogAuthor}>
-								<span>{stats.words} mots </span>
-								<span>
-								({lessThan}{minutes} {"minute" + minuteWordEnding}{" "} de lecture)
-								</span>
+									<span>{stats.words} mots </span>
+									<span>
+										({lessThan}
+										{minutes} {"minute" + minuteWordEnding}{" "}
+										de lecture)
+									</span>
 								</p>
 							</div>
-
 						</div>
 
-						<div
-							dangerouslySetInnerHTML={{ __html: file.content }}
-						/>
+						{postJSX}
 					</div>
 				</div>
 			</div>
@@ -150,46 +185,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 	const fileContents = await import(`src/_meta/posts/wc/${post_id}.md`);
 	const meta = matter(fileContents.default);
-	const unsafeContent = marked(meta.content);
 
-	const rawText = extractHTMLText(meta.content);
-	const readingStats = readingTime(rawText);
-	readingStats.minutes = roundReadingTime(readingStats.minutes);
+	const rawHTML = marked(meta.content);
 
-
-	let linksTexts: string[] = [];
-	//I could have used complex regex for this
-	//But I enjoy staying somewhat sane.
-
-	//Take all the texts of inside <a> tags
-	//Put it here for later access
-	//Because insane() filter doesn't give
-	//Access to children tags
-	//So to use a next <Link> and put inside it the text we do that
-	//FIXME: tired description
-
-	const matches = Array.from(unsafeContent.matchAll(/<a/g));
-	for(const match of matches) {
-		if(match.index == undefined) {
-			continue;
-		}
-		if(unsafeContent[match.index - 1] === '\\') {
-			continue;
-		}
-
-		let closingForOpen = unsafeContent.indexOf('>', match.index);
-		let closingTag = unsafeContent.indexOf('</a>', closingForOpen);
-		let content = unsafeContent.substring(closingForOpen + 1, closingTag);
-
-		linksTexts.push(content);
-	}
-
-	let linksTextCounter = 0;
-
-	const content = insane(
-		unsafeContent,
+	const sanitizedHTML: string = insane(
+		rawHTML,
 		{
-			allowedTags: insane.defaults.allowedTags.concat(['cite']),
+			allowedTags: insane.defaults.allowedTags.concat(["cite"]),
 			allowedAttributes: {
 				img: ["src", "alt"],
 				code: ["class"],
@@ -202,14 +204,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 						token.attrs.class = styles.imageflow;
 					}
 				}
-				
-				if (token.tag === 'a') {
-					token = (() => (<Link href={token.attrs['href']}> 
-							<a>
-								{linksTexts[linksTextCounter]}
-							</a>
-						</Link>))();
-				}
 
 				return true;
 			},
@@ -218,12 +212,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	);
 
 
+	//get the reading time for the raw text (no html/markdown/jsx, pure readable text)
+	const rawText = extractHTMLText(sanitizedHTML);
+	const readingStats = readingTime(rawText);
+	readingStats.minutes = roundReadingTime(readingStats.minutes);
+
 	return {
 		props: {
 			id: post_id,
 			file: {
 				data: meta.data,
-				content,
+				content: sanitizedHTML,
 			},
 			stats: readingStats,
 		},

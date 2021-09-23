@@ -1,6 +1,6 @@
 ---
 title: Premier post !
-author: Inspecteur Toilettes
+author: l'Inspecteur
 ---
 
 Wow le tout premier post du blog ! 
@@ -18,7 +18,6 @@ Vous vous demandez peut-etre,
 Et ce post est là pour vous répondre, donc continuez de lire.
 
 [vidéo de présentation (j'ai engagé un animateur pro pour ça, donc vous feriez mieux de cliquer)](https://www.youtube.com/watch?v=DLzxrzFCyOs)
-
 
 
 Ce blog est là pour répondre à un besoin simple. Un besoin, que chaque lecteur de cette page à eu, à un moment dans sa vie.
@@ -44,5 +43,5 @@ Vous retrouverez donc, en somme :
 - des posts sur des sujets interessants, ou pas. Je peut écrire n'importe quoi, vu que je fais ce que je veux de toute façon.
 - et peut-être d'autres choses, et d'autres fonctionnalités. Ce projet est en constante évolution.
 
-[voir une liste de tout les posts](/wc/post/antoine)
+[retour à la page d'acceuil](/)
 
