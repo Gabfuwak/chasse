@@ -10,7 +10,7 @@ import insane from "insane";
 
 import useObjectMediaQuery from "@hooks/objmediaquery";
 
-import styles from "@styles/p/wc/post_generals.module.css";
+import styles from "@styles/u/post.module.css";
 import toiletStyles from "@styles/u/toilet.module.css";
 
 import compose from "@tools/composecss";

@@ -1,6 +1,6 @@
 ---
 post_title: Top 10 des pires toilettes de l'IUT 
-author: Danielle Dante Gurauvinci
+author: l'Inspecteur
 ---
 
 ## Bonjour

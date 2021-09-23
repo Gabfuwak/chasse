@@ -3,7 +3,7 @@ import fs, { read, stat } from "fs";
 //React
 import React, { Fragment, ReactNode } from "react";
 //Next
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
 
@@ -22,36 +22,35 @@ import ReactDOMServer from "react-dom/server";
 import useObjectMediaQuery from "@hooks/objmediaquery";
 
 //CSS modules
-import styles from "@styles/p/wc/post_generals.module.css";
+import styles from "@styles/u/post.module.css";
 import toiletStyles from "@styles/u/toilet.module.css";
 //CSS utility function + nice background
 import compose from "@tools/composecss";
-import ToiletBG from "@components/toiletbackground";
 
 //Typescript object for the shape of the toilet metadata
 import ToiletMetaDataShape from "@meta/toilets/data.shape";
 
 //Used for little reading time indicator
 import readingTime, { ReadTimeResults } from "reading-time";
+import CoolPost from "@util/components/post";
+import getAllPosts from "@util/tools/getallposts";
 
 //Placed here so we don't have to serialize it
 const htmlParserOptions: HTMLReactParserOptions = {
 	replace: (domNode: any) => {
 		//? Had to turn off typescript type checking here
-		
-		if(domNode.type === 'text'){
+
+		if (domNode.type === "text") {
 			return;
 		}
 
-		if(domNode.name === 'a'){
+		if (domNode.name === "a") {
 			return (
 				//href has to exist here
 				<Link href={domNode.attribs.href}>
-					<a>
-						{domToReact(domNode.children, htmlParserOptions)}
-					</a>
+					<a>{domToReact(domNode.children, htmlParserOptions)}</a>
 				</Link>
-			)
+			);
 		}
 	},
 };
@@ -69,60 +68,18 @@ interface PostProps {
 }
 
 export default function Page({ id, file, meta, stats }: PostProps) {
-	const matches = useObjectMediaQuery(
-		{
-			screen: true,
-			maxAspectRatio: "19/20",
-		},
-		{
-			screen: true,
-			maxWidth: "60ch",
-		}
-	);
-
-	const blogAndMobilePostStyle = compose(
-		styles.blogpost,
-		matches ? styles.mobileBlogpost : undefined
-	);
-
-	let minutes: string | number = stats.minutes;
-	let minuteText = `${minutes==0 ? "moins d'une" : minutes} minute${minutes==0 ? "" : "s"} de lecture`;
-
 	const postJSX = parse(file.content, htmlParserOptions);
-	
-	
+
 	return (
-		<Fragment>
-			<Head>
-				<title>{file.data.title}</title>
-			</Head>
-
-			<ToiletBG />
-
-			<div className={toiletStyles.realPageBG}>
-				<div className={styles.blogpostContainer}>
-					<div className={blogAndMobilePostStyle}>
-						<div>
-							<h1>{file.data.title}</h1>
-
-							<div>
-								<p className={styles.blogAuthor}>
-									Par {file.data.author}
-								</p>
-								<p className={styles.blogAuthor}>
-									<span>{stats.words} mots </span>
-									<span>
-										({minuteText})
-									</span>
-								</p>
-							</div>
-						</div>
-
-						{postJSX}
-					</div>
-				</div>
-			</div>
-		</Fragment>
+		<CoolPost
+			info={{
+				readingStats: stats,
+				title: file.data.title,
+				author: file.data.author,
+			}}
+		>
+			{postJSX}
+		</CoolPost>
 	);
 }
 
@@ -161,13 +118,32 @@ function extractHTMLText(htmlString: string) {
 	return resultText;
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getStaticPaths: GetStaticPaths = async () => {
+	const posts = getAllPosts();
+
+	type JSONPost = {
+		name: string;
+		title: string;
+		author: string;
+	};
+
+	// Get the paths we want to pre-render based on posts
+	const paths = posts.map((post: JSONPost) => ({
+		params: { post_id: post.name },
+	}));
+
+	// We'll pre-render only these paths at build time.
+	// { fallback: false } means other routes should 404.
+	return { paths, fallback: false };
+};
+
+export const getStaticProps: GetStaticProps = async (context) => {
 	let post_id = context.params?.post_id;
 	if (Array.isArray(post_id)) {
 		post_id = post_id[0];
 	}
 
-	const fileContents = await import(`src/_meta/posts/wc/${post_id}.md`);
+	const fileContents = await import(`src/_meta/posts/${post_id}.md`);
 	const meta = matter(fileContents.default);
 
 	const rawHTML = marked(meta.content);
@@ -194,7 +170,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		},
 		false
 	);
-
 
 	//get the reading time for the raw text (no html/markdown/jsx, pure readable text)
 	const rawText = extractHTMLText(sanitizedHTML);
