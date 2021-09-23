@@ -5,6 +5,9 @@
 /.pnp
 .pnp.js
 
+#custom commit message
+commit_message.txt
+
 # testing
 /coverage
 
