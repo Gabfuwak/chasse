@@ -1,6 +1,9 @@
 ---
 title: Premier post !
 author: l'Inspecteur
+explorer: 
+    hint_visible: true
+    description: Premier post du blog / présentation générale.
 ---
 
 Wow le tout premier post du blog ! 

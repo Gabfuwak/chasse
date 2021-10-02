@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import Head from "next/head";
 
-import useObjectMediaQuery from "@util/hooks/objmediaquery";
+import useObjectMediaQuery, { useIsMobileMQ } from "@util/hooks/objmediaquery";
 import compose from "@util/tools/composecss";
 
 import styles from "@styles/u/post.module.css";
@@ -21,16 +21,7 @@ interface PostProps {
 }
 
 export default function CoolPost({ children, info }: PostProps) {
-	const matches = useObjectMediaQuery(
-		{
-			screen: true,
-			maxAspectRatio: "19/20",
-		},
-		{
-			screen: true,
-			maxWidth: "60ch",
-		}
-	);
+	const matches = useIsMobileMQ();
 
 	const blogAndMobilePostStyle = compose(
 		styles.blogpost,

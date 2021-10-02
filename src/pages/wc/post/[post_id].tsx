@@ -34,6 +34,7 @@ import ToiletMetaDataShape from "@meta/toilets/data.shape";
 import readingTime, { ReadTimeResults } from "reading-time";
 import CoolPost from "@util/components/post";
 import getAllPosts from "@util/tools/getallposts";
+import { extractHTMLText, roundReadingTime } from "@util/tools/postutils";
 
 //Placed here so we don't have to serialize it
 const htmlParserOptions: HTMLReactParserOptions = {
@@ -81,41 +82,6 @@ export default function Page({ id, file, meta, stats }: PostProps) {
 			{postJSX}
 		</CoolPost>
 	);
-}
-
-function roundReadingTime(time: number) {
-	if (time < 0.8) {
-		time = 0;
-	} else {
-		time = Math.ceil(time);
-	}
-
-	return time;
-}
-
-function extractHTMLText(htmlString: string) {
-	let resultText = "";
-	let tagBuffer = "";
-
-	let inTagDeclaration = false;
-
-	for (let char of htmlString) {
-		if (inTagDeclaration) {
-			if (char === "<") {
-				inTagDeclaration = true;
-			} else if (char === ">") {
-				console.log(tagBuffer);
-				tagBuffer = "";
-				inTagDeclaration = false;
-			} else {
-				tagBuffer += char;
-			}
-		} else {
-			resultText += char;
-		}
-	}
-
-	return resultText;
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {

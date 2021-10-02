@@ -552,6 +552,11 @@
     "@types/mime" "^1"
     "@types/node" "*"
 
+"@types/webpack-env@^1.16.2":
+  "integrity" "sha512-vKx7WNQNZDyJveYcHAm9ZxhqSGLYwoyLhrHjLBOkw3a7cT76sTdjgtwyijhk1MaHyRIuSztcVwrUOO/NEu68Dw=="
+  "resolved" "https://registry.npmjs.org/@types/webpack-env/-/webpack-env-1.16.2.tgz"
+  "version" "1.16.2"
+
 "@typescript-eslint/parser@^4.20.0":
   "integrity" "sha512-+92YRNHFdXgq+GhWQPT2bmjX09X7EH36JfgN2/4wmhtwV/HPxozpCNst8jrWcngLtEVd/4zAwA6BKojAlf+YqA=="
   "resolved" "https://registry.npmjs.org/@typescript-eslint/parser/-/parser-4.29.0.tgz"

@@ -31,3 +31,16 @@ const useMediaQuery = (query: string) => {
 export default function useObjectMediaQuery(...object: json2mq.QueryObject[]) {
 	return useMediaQuery(json2mq(object));
 }
+
+export function useIsMobileMQ() {
+	return useObjectMediaQuery(
+		{
+			screen: true,
+			maxAspectRatio: "19/20",
+		},
+		{
+			screen: true,
+			maxWidth: "60ch",
+		}
+	);
+}
