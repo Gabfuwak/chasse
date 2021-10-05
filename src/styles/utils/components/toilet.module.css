@@ -13,7 +13,7 @@
 	background-size: var(--background-size) var(--background-size);
 
 	animation-name: bgchachaSlide;
-	animation-duration: 20s;
+	animation-duration: 60s;
 	animation-timing-function: linear;
 	animation-iteration-count: infinite;
 }

@@ -1,30 +1,35 @@
 html,
 body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+	padding: 0;
+	margin: 0;
+	font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+		Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 
-  font-size: 20px;
+	font-size: 20px;
 
-  background-color: #1e1e1e;
-  color: white;
+	background-color: #1e1e1e;
+	color: white;
 
+	min-height: 100vh;
 }
 
-
-html{
-  min-height:100%;/* make sure it is at least as tall as the viewport */
+#__next {
+	width: 100%;
+	height: 100%;
 }
-body{
-  height:100%; /* force the BODY element to match the height of the HTML element */
+
+html {
+	min-height: 100%; /* make sure it is at least as tall as the viewport */
+}
+body {
+	height: 100%; /* force the BODY element to match the height of the HTML element */
 }
 
 a {
-  color: lightseagreen;
-  text-decoration: underline;
+	color: lightseagreen;
+	text-decoration: underline;
 }
 
 * {
-  box-sizing: border-box;
+	box-sizing: border-box;
 }

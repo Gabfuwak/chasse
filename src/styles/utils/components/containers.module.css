@@ -1,0 +1,26 @@
+
+.shared {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.row {
+    flex-direction: row;
+    width: 100%;
+}
+
+.column {
+    flex-direction: column;
+    height: 100%;
+}
+
+.item {
+    flex-grow: 1;
+}
+
+.fill {
+    width: 100%;
+    min-height: 100vh;
+    min-width: 100vw;
+    height: 100%;
+}
