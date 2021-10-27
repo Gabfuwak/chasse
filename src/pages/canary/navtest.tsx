@@ -3,10 +3,10 @@ import React from "react";
 
 export default function Page() {
 	return (
-		<BasicNavFillLayout>
+		<BasicNavFillLayout style={{margin: '1rem'}}>
 			<h1>wow !</h1>
 
-			<div style={{ paddingBottom: "5rem" }}>
+			<div>
 				{`Ce blog est là pour répondre à un besoin simple. Un besoin, que
 				chaque lecteur de cette page à eu, à un moment dans sa vie. Le
 				besoin, la nécéssité même, d'obtenir les plus proche et plus

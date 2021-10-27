@@ -19,7 +19,7 @@ import parse, {
 import ReactDOMServer from "react-dom/server";
 
 //Media query hook
-import useObjectMediaQuery from "@hooks/objmediaquery";
+import useObjectMediaQuery, { useIsMobileMQ } from "@hooks/objmediaquery";
 
 //CSS modules
 import styles from "@styles/u/post.module.css";
@@ -35,6 +35,7 @@ import readingTime, { ReadTimeResults } from "reading-time";
 import CoolPost from "@util/components/post";
 import getAllPosts from "@util/tools/getallposts";
 import { extractHTMLText, roundReadingTime } from "@util/tools/postutils";
+import BasicNavFillLayout from "@util/components/layouts";
 
 //Placed here so we don't have to serialize it
 const htmlParserOptions: HTMLReactParserOptions = {
@@ -69,18 +70,22 @@ interface PostProps {
 }
 
 export default function Page({ id, file, meta, stats }: PostProps) {
+	const matches = useIsMobileMQ();
+
 	const postJSX = parse(file.content, htmlParserOptions);
 
 	return (
-		<CoolPost
-			info={{
-				readingStats: stats,
-				title: file.data.title,
-				author: file.data.author,
-			}}
-		>
-			{postJSX}
-		</CoolPost>
+		<BasicNavFillLayout style={{ margin: "1rem", marginBottom: '3rem'}} fill={matches} center={!(matches)}>
+			<CoolPost
+				info={{
+					readingStats: stats,
+					title: file.data.title,
+					author: file.data.author,
+				}}
+			>
+				{postJSX}
+			</CoolPost>
+		</BasicNavFillLayout>
 	);
 }
 
