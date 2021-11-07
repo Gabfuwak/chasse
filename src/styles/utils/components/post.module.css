@@ -1,23 +1,9 @@
 
-.blogpostContainer {
-	--post-border-width: 4px;
-	--min-post-width: 60ch;
-
-	width: 100%;
-	height: fit-content;
-	
-
-	overflow: hidden;
-
-	margin: 6vh 0 2vh;
-
-	display: flex;
-	align-items: center;
-	justify-content: space-around;
-}
-
 .blogpost {
-	width: clamp(var(--min-post-width), 80vw, 100%);
+	--post-border-width: 4px;
+	--min-post-width: 50ch;
+
+	max-width: clamp(var(--min-post-width), 80vw, 90ch);
 	height: min-content;
 	background-color: #1e1e1e;
 
@@ -34,10 +20,12 @@
 
 
 .mobileBlogpost {
+	max-width: 100%;
 	width: 100%;
 	margin: 0;
 	border-right: none;
 	border-left: none;
+	border-bottom: none;
 	border-radius: 0px;
 }
 

@@ -1,0 +1,6 @@
+
+.leftroasted {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    grid-template-rows: 1fr;
+}
