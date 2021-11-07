@@ -41,7 +41,7 @@
       "@components/*": ["./src/util/common/components/*"]
     }
   },
-  "include": ["next-env.d.ts", "insane.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "custom.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }
 
