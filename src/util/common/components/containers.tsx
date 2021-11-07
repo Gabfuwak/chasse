@@ -3,7 +3,7 @@ import { Fragment, ReactNode } from "react";
 import styles from "@styles/u/components/containers.module.css";
 import compose from "@util/tools/composecss";
 
-type MinifyType = "both" | "width" | "height";
+type ExpansionType = "both" | "width" | "height";
 
 /**
  * Can it take options as props
@@ -13,7 +13,7 @@ type MinifyType = "both" | "width" | "height";
 interface Optionnable {
 	fill?: boolean;
 	center?: boolean;
-	minify?: MinifyType;
+	minify?: ExpansionType;
 }
 
 interface ExtraPropable {
@@ -95,6 +95,7 @@ function UnshapedContainer({
 	fill,
 	center,
 	minify,
+	className,
 	...props
 }: UnshapedCProps) {
 	let actualChildren: ReactNode[];
@@ -108,6 +109,7 @@ function UnshapedContainer({
 	return (
 		<div
 			className={compose(
+				className,
 				styles.shared,
 				styles[shape],
 				fill && styles.fill,
@@ -127,7 +129,7 @@ export function PageContainer({ children }: MultableCProps) {
 	return <div className={styles.page}>{children}</div>;
 }
 
-function getMinifyStyle(minify?: MinifyType) {
+function getMinifyStyle(minify?: ExpansionType) {
 	const width = minify === 'both' || minify === "width";
 	const height = minify === 'both' || minify === "height";
 
