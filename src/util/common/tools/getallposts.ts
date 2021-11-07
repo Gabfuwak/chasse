@@ -1,9 +1,8 @@
-import path from "path";
-import fs from "fs";
-import matter from "gray-matter";
+
 import readingTime, { ReadTimeResults } from "reading-time";
 import { extractHTMLText, roundReadingTime } from "./postutils";
-import marked from "marked";
+import snarkdown from "snarkdown";
+import { parseFrontMatter } from "./parseCustomFM";
 
 export type TruncatedReadTimeResults = ReadTimeResults & {
 	originalMinutes: number;
@@ -47,6 +46,62 @@ export function getVisiblePosts(): Post[] {
 	return resultPosts;
 }
 
+export function getAllReviews(): Post[] {
+	//Big thanks to
+	//https://robkendal.co.uk/blog/use-webpack-and-require-context-to-load-html-files
+	//So I could NOT use 'fs'. Instead, use webpack require.context
+	//typescript off for most of that
+
+	let posts: Post[] = [];
+
+	((context: any) => {
+		context.keys().forEach((key: any) => {
+			const name = key.substring("./".length, key.lastIndexOf("."));
+
+			if (name.indexOf("/") !== -1) {
+				return;
+			}
+
+			const mattered = parseFrontMatter(context(key).default);
+
+			const meta: any = mattered.data;
+
+			const ERROR_STRING = "ERROR_MISSING_DATA";
+
+			meta.title ??= ERROR_STRING;
+			meta.author ??= ERROR_STRING;
+
+			meta.explorer ??= {}; // explorer is an object;
+			meta.explorer.description ??= ERROR_STRING;
+			meta.explorer.hint_visible ??= true; //If this field is wrong we probably shouldn't see it.
+
+			const markdown = mattered.content;
+			const rawText = extractHTMLText(snarkdown(markdown));
+
+			const rawReadingStats = readingTime(rawText);
+			const readingStats = {
+				...rawReadingStats,
+				originalMinutes: rawReadingStats.minutes,
+			};
+			readingStats.minutes = roundReadingTime(readingStats.minutes);
+
+			posts.push({
+				name,
+				title: meta.title,
+				author: meta.author,
+
+				data: {
+					readingStats,
+
+					explorer: meta.explorer,
+				},
+			});
+		});
+	})(require.context("src/_meta/toilets", false, /.md$/));
+
+	return posts;
+}
+
 export default function getAllPosts(): Post[] {
 	//Big thanks to
 	//https://robkendal.co.uk/blog/use-webpack-and-require-context-to-load-html-files
@@ -63,9 +118,9 @@ export default function getAllPosts(): Post[] {
 				return;
 			}
 
-			const mattered = matter(context(key).default);
+			const mattered = parseFrontMatter(context(key).default);
 
-			const meta = mattered.data;
+			const meta: any = mattered.data;
 
 			const ERROR_STRING = "ERROR_MISSING_DATA";
 
@@ -77,7 +132,7 @@ export default function getAllPosts(): Post[] {
 			meta.explorer.hint_visible ??= true; //If this field is wrong we probably shouldn't see it.
 
 			const markdown = mattered.content;
-			const rawText = extractHTMLText(marked(markdown));
+			const rawText = extractHTMLText(snarkdown(markdown));
 
 			const rawReadingStats = readingTime(rawText);
 			const readingStats = {

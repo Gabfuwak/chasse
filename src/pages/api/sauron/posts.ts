@@ -1,8 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import path from "path";
-import fs from "fs";
-import matter from "gray-matter";
 import getAllPosts, { getVisiblePosts, Post } from "@util/tools/getallposts";
 
 type Data = {
