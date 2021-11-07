@@ -1,7 +1,7 @@
----
-title: Test post
-author: Danielle 
----
++++
+title = "Test post"
+author = "Danielle" 
++++
 
 ## Awesome post
 

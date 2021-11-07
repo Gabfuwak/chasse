@@ -1,21 +1,16 @@
----
-title: Premier post !
-author: l'Inspecteur
-explorer: 
-    hint_visible: true
-    description: Premier post du blog / présentation générale.
----
++++
+title = "Premier post !"
+author = "l'Inspecteur"
 
-Wow le tout premier post du blog ! 
-
------------------
+[explorer] 
+hint_visible = "true"
+description = "Wow le tout premier post du blog !"
++++ 
 
 Bienvenue sur le blog officiel de l'inspecteur officiel des toilettes de l'IUT d'Orsay !
 Vous vous demandez peut-etre, 
 - qu'est-ce qu'est ce blog ? 
-
 - A quoi sert un classement des toilettes de l'iut ? 
-
 - Etez vous réellement l'inspecteur _officiel_ des toilettes de l'iut ?
 
 Et ce post est là pour vous répondre, donc continuez de lire.
