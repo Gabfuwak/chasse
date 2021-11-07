@@ -2,6 +2,7 @@ import React, {ReactNode } from "react";
 import { RowContainer, ColumnContainer } from "./containers";
 import AppNavbar from "@components/navbar";
 
+import basicnavfillstyles from '@styles/u/layouts/basicnavfill.module.css'
 
 interface BasicLayoutProps {
     children: ReactNode;
@@ -18,7 +19,7 @@ the children
 */
 export default function BasicNavFillLayout({children, ...props}: BasicLayoutProps) {
     return (
-        <RowContainer fill>
+        <RowContainer fill className={basicnavfillstyles.leftroasted}>
 			<AppNavbar />
 
 			<ColumnContainer {...props}> 
