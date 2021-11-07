@@ -1,40 +1,31 @@
-import fs, { read, stat } from "fs";
-
 //React
-import React, { Fragment, ReactNode } from "react";
+import React, { Fragment } from "react";
 //Next
-import { GetServerSideProps, GetStaticPaths, GetStaticProps } from "next";
-import Head from "next/head";
+import { GetStaticPaths, GetStaticProps } from "next";
 import Link from "next/link";
+import Head from "next/head";
 
-//Parsing mardown into html into JSX
-import matter from "gray-matter";
-import marked from "marked";
+//Parsing, HTML-ing, sanitizing
+import { parseFrontMatter } from "@util/tools/parseCustomFM";
+import snarkdown from "snarkdown";
 import insane from "insane";
-import parse, {
-	domToReact,
-	HTMLReactParserOptions,
-	DOMNode,
-} from "html-react-parser";
-import ReactDOMServer from "react-dom/server";
+import parse, { domToReact, HTMLReactParserOptions } from "html-react-parser";
 
 //Media query hook
-import useObjectMediaQuery, { useIsMobileMQ } from "@hooks/objmediaquery";
+import { useIsMobileMQ } from "@hooks/objmediaquery";
 
 //CSS modules
-import styles from "@styles/u/post.module.css";
-import toiletStyles from "@styles/u/toilet.module.css";
-//CSS utility function + nice background
-import compose from "@tools/composecss";
+import styles from "@styles/p/wc/post.module.css";
 
 //Typescript object for the shape of the toilet metadata
 import ToiletMetaDataShape from "@meta/toilets/data.shape";
 
 //Used for little reading time indicator
 import readingTime, { ReadTimeResults } from "reading-time";
-import CoolPost from "@util/components/post";
-import getAllPosts from "@util/tools/getallposts";
+import getAllPosts, { getAllReviews } from "@util/tools/getallposts";
 import { extractHTMLText, roundReadingTime } from "@util/tools/postutils";
+
+//Layout
 import BasicNavFillLayout from "@util/components/layouts";
 
 //Placed here so we don't have to serialize it
@@ -74,23 +65,74 @@ export default function Page({ id, file, meta, stats }: PostProps) {
 
 	const postJSX = parse(file.content, htmlParserOptions);
 
+	const infos = {
+		readingStats: stats,
+		title: file.data.title,
+		author: file.data.author,
+	};
+
 	return (
-		<BasicNavFillLayout style={{ margin: "1rem", marginBottom: '3rem'}} fill={matches} center={!(matches)}>
-			<CoolPost
-				info={{
-					readingStats: stats,
-					title: file.data.title,
-					author: file.data.author,
-				}}
+		<>
+			<Head>
+				<title>{infos.title}</title>
+			</Head>
+
+			<BasicNavFillLayout
+				className={styles.post}
+				fill={matches}
+				center={!matches}
 			>
-				{postJSX}
-			</CoolPost>
-		</BasicNavFillLayout>
+				<article>
+					<PostHeader info={infos} />
+
+					<Fragment>{postJSX}</Fragment>
+				</article>
+			</BasicNavFillLayout>
+		</>
 	);
 }
 
+interface PostHeaderProps {
+	info: {
+		readingStats: ReadTimeResults;
+		title: string;
+		author: string;
+	};
+}
+
+function PostHeader({ info }: PostHeaderProps) {
+	let minutes: string | number = info.readingStats.minutes;
+	let minuteText = `${minutes == 0 ? "moins d'une" : minutes} minute${
+		minutes == 0 ? "" : "s"
+	} de lecture`;
+
+	return (
+		<header className={styles.header}>
+			<div>
+				<h1>{info.title}</h1>
+
+				<p>
+					<span>{info.readingStats.words} mots </span>
+					<span>({minuteText})</span>
+				</p>
+			</div>
+
+			<div className={styles.meta}>
+				<p>
+					Par <span className={styles.author}>{info.author}</span>
+				</p>
+			</div>
+		</header>
+	);
+}
+
+//==//==//==//==//==//==//==//==//==//==//
+//=====|        Server side        |====//
+//==//==//==//==//==//==//==//==//==//==//
+
 export const getStaticPaths: GetStaticPaths = async () => {
 	const posts = getAllPosts();
+	const reviews = getAllReviews();
 
 	type JSONPost = {
 		name: string;
@@ -100,8 +142,14 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 	// Get the paths we want to pre-render based on posts
 	const paths = posts.map((post: JSONPost) => ({
-		params: { post_id: post.name },
+		params: { post_id: post.name, article_type: "post" },
 	}));
+
+	paths.push(
+		...reviews.map((review: JSONPost) => ({
+			params: { post_id: review.name, article_type: "review" },
+		}))
+	);
 
 	// We'll pre-render only these paths at build time.
 	// { fallback: false } means other routes should 404.
@@ -110,14 +158,28 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async (context) => {
 	let post_id = context.params?.post_id;
+	let article_type = context.params?.article_type;
+
 	if (Array.isArray(post_id)) {
 		post_id = post_id[0];
 	}
 
-	const fileContents = await import(`src/_meta/posts/${post_id}.md`);
-	const meta = matter(fileContents.default);
+	let fileContents;
 
-	const rawHTML = marked(meta.content);
+	if (article_type === "post") {
+		fileContents = await import(`src/_meta/posts/${post_id}.md`);
+	} else if (article_type === "review") {
+		fileContents = await import(`src/_meta/toilets/${post_id}.md`);
+	} else {
+		//Does not exist
+		return {
+			notFound: true,
+		};
+	}
+
+	const meta = parseFrontMatter(fileContents.default);
+
+	const rawHTML = snarkdown(meta.content);
 
 	const sanitizedHTML: string = insane(
 		rawHTML,

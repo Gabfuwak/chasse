@@ -1,0 +1,25 @@
+
+.post {
+    font: 'Josefin Slab';
+    margin: 0 0 0 2rem;   
+}
+
+.post ul {
+    list-style-position: inside;
+    list-style-type: '<> ';
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+
+    margin: 0 0 1.5rem 0;
+}
+
+.meta {
+    color: gray;
+}
+
+.author {
+    text-decoration: underline;
+}
